@@ -13,6 +13,9 @@
 import argparse
 
 from google import genai
+
+from google.genai import types
+
 from google.genai import errors
 
 from app.config import MODEL, api_error_message, get_api_key
@@ -39,7 +42,7 @@ def _usage_value(metadata, *names: str):
 
 def ask(question: str) -> str:
     client = genai.Client(api_key=get_api_key())
-    response = client.models.generate_content(model=MODEL, contents=question)
+    response = client.models.generate_content(model=MODEL, contents=question,config=types.GenerateContentConfig(temperature=0),)
 
     usage = response.usage_metadata
     input_tokens = _usage_value(usage, "prompt_token_count", "input_token_count")
